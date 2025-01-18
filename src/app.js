@@ -1,26 +1,53 @@
 const express= require('express');
+const connectDB= require("./config/database");
 const app= express();
+const User= require("./models/user");
 
-//only handle GET call to /user
-app.get("/user",(req,res) => {
-    res.send({firstName:"Prat", lastName:"Gavatre"});
+app.use(express.json());
+
+app.post("/signup", async (req,res) => {
+    const user= new User(req.body);
+
+    try{
+        await user.save();
+    }catch(err){
+        res.status(400).send("User Added Successfully! "+err.message);
+    }
+})
+
+app.get("/user", async (req, res) => {
+    const userEmail = req.body.emailId;
+  
+    try {
+      console.log(userEmail);
+      const user = await User.findOne({ emailId: userEmail });
+      if (!user) {
+        res.status(404).send("User not found");
+      } else {
+        res.send(user);
+      }
+    } catch (err) {
+      res.status(400).send("Something went wrong ");
+    }
+  });
+
+app.get("/feed",async (req,res)=>{
+    try{
+        const users= await User.find({});
+        res.send(users);
+    }catch(err){
+        res.status(400).send("Somenthong went wrong");
+    }
 });
 
-app.post("/user",async(req,res) => {
-    console.log(req.body);
-    //saving data to DB
-    res.send("data sent successfully to database");
+connectDB()
+    .then(()=>{
+        console.log("Connection Created");
+        app.listen(3000,() =>{
+            console.log("server succesfully running");
+        });
+    })
+    .catch((err)=>{
+    console.log(err.message);
 });
 
-app.delete("/user",(req,res) => {
-    res.send("data deleted successfully from database");
-});
-
-//all the HTTP method API calls to /hello
-app.use("/hello",(req, res)=>{
-    res.send("Hello World from Server");
-});
-
-app.listen(3000,() =>{
-    console.log("server succesfully running");
-});
