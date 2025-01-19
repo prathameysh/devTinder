@@ -10,6 +10,7 @@ app.post("/signup", async (req,res) => {
 
     try{
         await user.save();
+        res.send("User Added successfully!");
     }catch(err){
         res.status(400).send("User Added Successfully! "+err.message);
     }
@@ -58,13 +59,11 @@ app.delete("/user", async (req, res) => {
     const userId = req.body.userId;
     const data = req.body;
     try {
-      const user = await User.findByIdAndUpdate({ _id: userId }, data, {
-        returnDocument: "after",
-      });
+      const user = await User.findByIdAndUpdate({ _id: userId }, data, {returnDocument: "after", runValidators:true,});
       console.log(user);
       res.send("User updated successfully");
     } catch (err) {
-      res.status(400).send("Something went wrong ");
+      res.status(400).send("Something went wrong: "+ err.message);
     }
   });
   
