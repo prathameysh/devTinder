@@ -4,7 +4,13 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-app.use(cors());
+// Configure CORS
+const corsOptions = {
+  origin: "http://localhost:5173", // Frontend URL
+  credentials: true,              // Allow credentials (cookies, etc.)
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
