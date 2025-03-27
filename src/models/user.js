@@ -1,4 +1,5 @@
 const mongoose= require("mongoose");
+const validator= require("validator");
 
 
 const userSchema= new mongoose.Schema({
@@ -11,7 +12,13 @@ const userSchema= new mongoose.Schema({
       },
       emailId: {
         type: String,
-      },
+        required: true, // Email is mandatory
+        unique: true,   // Ensures no duplicate emails
+        validate: {
+            validator: validator.isEmail, // Uses validator's isEmail method
+            message: "Invalid email format", // Custom error message
+        },
+    },
       password: {
         type: String,
       },
@@ -21,6 +28,8 @@ const userSchema= new mongoose.Schema({
       gender: {
         type: String,
       },
+},{
+  timestamps: true,
 });
 
 module.exports=mongoose.model("User",userSchema);
