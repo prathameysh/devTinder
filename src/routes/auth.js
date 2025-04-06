@@ -44,7 +44,8 @@ authRouter.post("/login", async(req,res)=>
             console.log(token);
 
         res.cookie("token",token);
-        res.send("Logged In");
+        res.send(user);
+        
         }
         else
         {
