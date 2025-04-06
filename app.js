@@ -5,7 +5,9 @@ const User = require("./src/models/user");//because we want to fill the values i
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const authorize = require("./src/middlewares/auth");
+const cors=require("cors");
 
+app.use(cors({origin:"http://localhost:5173", credentials:true}));
 app.use(express.json()); //helps us convert the json to js object
 app.use(cookieParser()); //helps read cookies
 
