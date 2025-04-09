@@ -28,6 +28,9 @@ const userSchema= new mongoose.Schema({
       gender: {
         type: String,
       },
+      imageUrl:{
+        type: String,
+      },
 },{
   timestamps: true,
 });

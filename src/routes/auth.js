@@ -14,11 +14,14 @@ authRouter.post("/signup", async (req, res) => {
         password: req.body.password,
         age: req.body.age,
         gender: req.body.gender,
+        imageUrl: req.body.imageUrl,
     });
 
     try {
-        await user.save();
-        res.send("User Added successfully!");
+        const savedUser=await user.save();
+        const token=await jwt.sign({_id:user._id},"DEV@TInder$790");
+        res.cookie("token",token);
+        res.send(savedUser);
     } catch (err) {
         res.status(500).send("Error: " + err.message);
     }
@@ -41,14 +44,9 @@ authRouter.post("/login", async(req,res)=>
         if(user.password===password)
         {
             const token=await jwt.sign({_id:user._id},"DEV@TInder$790");
-            console.log(token);
-
-        res.cookie("token",token);
-        res.send(user);
-        
-        }
-        else
-        {
+            res.cookie("token",token);
+            res.send(user);
+        }else{
             throw new Error("Invalid Credentials");
         } 
     }   

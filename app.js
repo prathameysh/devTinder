@@ -15,10 +15,12 @@ app.use(cookieParser()); //helps read cookies
 const authRouter = require("./src/routes/auth");
 const profileRouter = require("./src/routes/profile");
 const requestRouter = require("./src/routes/request");
+const feedRouter = require("./src/routes/feed");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
+app.use("/", feedRouter);
 
 connectDB()
   .then(() => {
