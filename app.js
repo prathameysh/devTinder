@@ -24,7 +24,7 @@ app.use("/", feedRouter);
 
 connectDB()
   .then(() => {
-    app.listen(7777, () => console.log("Server running on port 7777"));
+    app.listen(7777, '0.0.0.0', () => console.log("Server running on port 7777"));
   })
   .catch((err) => {
     console.error("Database connection failed:", err);
